@@ -1,0 +1,49 @@
+---
+title: "jdu5sq_HW#11"
+author: "Jacqui Unciano"
+date: "23/11/2021"
+output: html_document
+---
+
+```{r}
+library(nycflights13)
+library(dplyr)
+```
+
+Question 1.A
+- ID population and parameter of interest
+- population = all flights leaving EWR, JFK, and LGA, parameter of interest = average departure delay in minutes
+
+Question 1.B
+- construct 95% confidence interval for the mean of all flights (pop)
+- success = negative delay, fail = positive delay
+```{r}
+t.test(flights$dep_delay, conf.level = 0.95)
+```
+
+Question 1.C
+- interpret results from above
+- we are 95% confident that the average time of delay for all flights leaving EWR, JFK, and LGA is between 12.5 and 12.8 minutes. 
+
+QUestion 1.D
+- I would reject his claim that the average departure delay is 10 minutes because it is not within the confidence interval stated above.
+
+Question 2.A
+- count number of AA flights
+- number of AA flights = 32729
+```{r}
+aaflights = flights %>% mutate(aa = ifelse(carrier == "AA", 1, 0)) %>% select(aa)
+table(aaflights$aa)
+```
+
+Question 2.B
+- H0: p-val > 0.12, HA: p-val <= 0.12, alpha = 0.05
+- Because the p-value is very very small (less than the level of sig. 0.05), that means that there is more evidence that says that less than 12% of the flights are AA. Meaning that the probability of the number of AA flights being 12% is very, very small.
+```{r}
+prop.test(32729, 32729+304047, p=0.12, alternative = "less")
+```
+
+Question 2.C
+- Type 1 error in this case would be saying that 12% of the flights leaving the airport are AA flights is false (rejecting the H0) when in reality, 12% of the flights are AA (the H0 is true).
+- Type 2 error in this case would be saying that 12% of the flights are AA (the H0 is true)  when in reality, the percent of AA flights is less than 12% (the HA is true). 
+- I personally don't think it matters, but I guess from a business standpoint the worst error would be type 2. Because you would want more flights going out because that would mean more people are flying on your company planes and that means more money for AA. So if someone where to say it was 12%, but in reality, is was lower, then that would mean that less money was being made than predicted. 

@@ -1,0 +1,43 @@
+---
+title: "jdu5sq_HW#1"
+author: "Jacqui Unciano"
+date: "26/08/2021"
+output: html_document
+---
+
+Question 1
+
+(a)
+
+```{r}
+(9*(3+5)^3)/sqrt(10)
+```
+
+(b)
+
+```{r}
+a=5
+b=-2
+c=0.5
+(a*c*b^2)/abs(b)
+```
+
+(c)
+
+```{r}
+sum(94.3,86.1,88.5,83)/4
+# Letter grade: B+
+```
+
+Question 2
+
+(a) False
+(b) False
+(c) False
+(d) False
+(e) True
+(f) False
+(g) False
+(h) True
+(i) False
+(j) True

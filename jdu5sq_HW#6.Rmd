@@ -1,0 +1,58 @@
+---
+title: "jdu5sq_HW#6"
+author: "Jacqui Unciano"
+date: "01/10/2021"
+output: html_document
+---
+
+```{r}
+top50data = read.csv("C:\\Users\\jacqu\\Downloads\\School Work\\MathTech Class\\STAT 1601\\DataSets\\top50data.csv")
+library(dplyr)
+library(tidyverse)
+```
+
+Question 1
+- check variable types for votes and runtime
+```{r}
+class(top50data$votes)
+class(top50data$runtime)
+```
+
+Question 2
+- adding column Runtimes = -min from runtime and change type to numeric, first six rows
+```{r}
+new_data = top50data %>% mutate("Runtimes" = gsub("min", "", runtime)) %>% mutate(Runtimes = as.numeric(Runtimes)) %>% select(-runtime)
+head(new_data, 6)
+```
+
+QUestion 3
+- adding column vote_count = -, from votes and change to numeric, first six rows
+```{r}
+new_data1 = new_data %>% mutate("vote_count" = gsub(",", "", votes)) %>% mutate(vote_count = as.numeric(vote_count)) %>% select(-votes)
+head(new_data1, 6)
+```
+
+Question 4
+- adding column Genre = -\n and get a glimpse()
+```{r}
+new_data2 = new_data1 %>% mutate("Genre" = gsub("\n", "", genre)) %>% select(-genre)
+glimpse(new_data2)
+```
+
+Question 5
+- adding column topranking 
+```{r}
+new_and_revised = new_data2 %>% mutate("topranking" = ifelse(rank <= 10, "top10", ifelse(rank <= 20, "top20", ifelse(rank <= 30, "top30", ifelse(rank <= 40, "top40", ifelse(rank <= 50, "top50", ""))))))
+head(new_and_revised, 6)
+```
+
+Question 6
+- adding new column New_certificate 
+```{r}
+final_data = new_and_revised %>% mutate("New_certificate" = 
+            ifelse(grepl(paste(c("PG", "PG-13"), collapse = "|"), certificate), "PG",
+            ifelse(grepl(paste(c("Not Rated", "Approved", "Passed"), collapse = "|"), certificate), "NR", 
+            ifelse(grepl(paste("R", collapse = "|"), certificate), "R", 
+            ifelse(grepl(paste("G", collapse = "|"), certificate), "G", "")))))
+glimpse(final_data)
+```

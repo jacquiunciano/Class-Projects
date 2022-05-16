@@ -1,0 +1,43 @@
+---
+title: "jdu5sq_HW#5"
+author: "Jacqui Unciano"
+date: "23/09/2021"
+output: html_document
+---
+
+```{r}
+library(nycflights13)
+library(tidyverse)
+library(rvest)
+```
+
+Question 1
+- average departure delay by carrier, descending order 
+```{r}
+finalTable = flights %>% group_by(carrier) %>% summarise(Average_delay = mean(dep_delay, na.rm = T)) %>% arrange(desc(Average_delay)) %>% inner_join(airlines, by = "carrier") %>% select(carrier,airline_name = name,Average_delay)
+head(finalTable, 6)
+```
+
+Question 2
+- Hector will have data with larger sd
+
+Question 3
+- the IQR of the exam scores after the addition of five points to every exam would stay the same
+
+Question 4
+- the median would be larger because Americans love Halloween, so they spends lots of money on the decorations and things like that --> distribution skewed to the left --> the mean is pulled to the left and less than the median
+
+Question 5
+- scrapping from IMDb
+```{r}
+imdbthing = read_html("https://www.imdb.com/search/title/?groups=top_250&sort=user_rating")
+title = imdbthing %>% html_nodes(".lister-item-header a") %>% html_text()
+rank = imdbthing %>% html_nodes(".text-primary") %>% html_text()
+certificate = imdbthing %>% html_nodes(".certificate") %>% html_text()
+votes = imdbthing %>% html_nodes(".sort-num_votes-visible span:nth-child(2)") %>% html_text()
+rating = imdbthing %>% html_nodes(".ratings-imdb-rating strong") %>% html_text()
+runtime = imdbthing %>% html_nodes(".runtime") %>% html_text()
+genre = imdbthing %>% html_nodes(".genre") %>% html_text()
+top50movies = cbind(title, rank, certificate, votes, rating, runtime, genre)
+head(top50movies, 6)
+```

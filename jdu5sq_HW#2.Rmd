@@ -1,0 +1,55 @@
+---
+title: "jdu5sq+HW#2"
+author: "Jacqui Unciano"
+date: "02/09/2021"
+output: html_document
+---
+
+```{r}
+library(nycflights13)
+```
+
+Question 1
+
+(a)
+```{r}
+mean(flights$distance)
+```
+The mean distance is 1039.913 units.
+
+(b)
+```{r}
+length(flights$origin)
+table(flights$origin)
+```
+The number if flights that left from the origin is 336,776.
+120,835 from EWR, 111,279 from JFK, and 104,662 from LGA.
+
+Question 2
+
+(a)
+```{r}
+nbaDat<-read.csv("C:\\Users\\jacqu\\Downloads\\School Work\\MathTech Class\\STAT 1601\\DataSets\\nba.csv")
+```
+
+(b)
+```{r}
+summary(nbaDat$TOV)
+```
+Results: Min = 3.00   1Q = 11.00   Median = 14.00   Mean = 13.68   3Q = 16.00   Max = 29.00
+
+Question 3
+
+```{r}
+write.csv(mtcars,"C:\\Users\\jacqu\\Downloads\\School Work\\MathTech Class\\STAT 1601\\DataSets\\mtcars.csv")
+```
+
+Question 4
+```{r}
+rep("Q1",4)
+seq(50,100,2.5)
+rep(c(2010,2011,2012,2013,2014,2015,2016,2017),c(4,4,4,4,4,4,4,4))
+rep(c(2016,2017),c(4,3))
+c(seq(1295,1300,1),seq(1299,1290,-1))
+seq(4150,3530,-155)
+```

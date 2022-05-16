@@ -1,0 +1,67 @@
+---
+title: "jdu5sq_HW#8"
+author: "Jacqui Unciano"
+date: "01/11/2021"
+output: html_document
+---
+
+```{r}
+library(nycflights13)
+library(ggplot2)
+library(dplyr)
+library(ggwordcloud)
+library(RColorBrewer)
+```
+
+Question 1
+- make a polar coor. chart with origin variable
+```{r}
+ggplot(flights, aes(x=origin))+geom_bar(fill=brewer.pal(3,"Set2"))+coord_polar()
+```
+
+Question 2
+-create word cloud graph with name, count, and origin
+```{r}
+dat<-flights%>%
+inner_join(airlines, by="carrier")%>%
+group_by(name,origin)%>%
+summarise(count=n())
+ggplot(dat,aes(label=name, size=count, colour=origin))+geom_text_wordcloud_area(rm_outside = TRUE)+scale_size_area(max_size = 50)
+```
+
+Question 3
+-create tile graph with airline_name, date, and dep_delay
+-The grey areas most likely represent when the departure of an airline was mostly eariler than expected (so like "negative" delay times)
+```{r}
+Thanksgiving_data<-flights%>%
+inner_join(airlines, by="carrier")%>%
+rename(airline_name=name)%>%
+mutate(date=as.Date(time_hour))%>%
+filter(date>="2013-11-24" & date<="2013-11-30")
+ggplot(Thanksgiving_data,aes(x=date,y=airline_name, fill=dep_delay))+geom_tile(color="white")+scale_fill_distiller(direction = 1)
+```
+
+Question 4
+-tile graph with airline_name, date, and distance
+-the airline that traveled the greatest distance during Thanksgiving week of 2013 is Hawaiian Airlines Inc.
+```{r}
+ggplot(Thanksgiving_data,aes(x=date,y=airline_name, fill=distance))+geom_tile(color="white")+scale_fill_distiller(palette="RdPu", direction = 1)
+```
+
+Question 5
+-create Christmas data from Thanksgiving data
+```{r}
+christmas_data<-flights%>%
+inner_join(airlines, by="carrier")%>%
+rename(airline_name=name)%>%
+mutate(date=as.Date(time_hour))%>%
+filter(date>="2013-12-21" & date<="2013-12-31")
+Christmas_data = christmas_data%>%group_by(date,origin)%>%summarize(avg_dep_delay=mean(dep_delay, na.rm = TRUE))%>%select(date, origin, avg_dep_delay)
+```
+
+Question 6
+-create line graph with avg_dep_delay, date, and origin
+```{r}
+ggplot(Christmas_data,aes(x=date, y=avg_dep_delay,group=origin, color=origin))+geom_line()+geom_point()
+```
+

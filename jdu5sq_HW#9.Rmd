@@ -1,0 +1,54 @@
+---
+title: "jdu5sq_HW#9"
+author: "Jacqui Unciano"
+date: "08/11/2021"
+output: html_document
+---
+```{r}
+broadwayShows = read.csv("C:\\Users\\jacqu\\Downloads\\BroadwayShows.csv")
+library(ggplot2)
+library(dplyr)
+library(ISLR)
+```
+
+
+Question 1
+- Build regression model with Paid attendance predictor variable and Revenue response variable
+- SLR model: R = 0.05261 + 0.07645a
+```{r}
+ggplot(broadwayShows,aes(x=Paid.Attendance, y=Revenue))+geom_point()+geom_smooth(method = "lm")
+paidAttendance_model = lm(Revenue~Paid.Attendance, broadwayShows)
+summary(paidAttendance_model)
+```
+
+Question 2
+- Interpretation of the slope coefficient: for every 1,000 paying customers, the Broadway show industry makes about 0.07645 million dollars in revenue (or $76,450)
+
+Question 3
+- Interpretation of the R-sq value (0.9237): According to the multiple R-sq value, about 92% of the data fits the model, as in, about 92% of the variability in revenue can be explained by the number of paid attendees.
+
+Question 4
+- Build multiple regression model for predicting Revenue using Paid.Attendance, Number.of.Shows and Avg.Ticket.Price as predictor variables
+- MRM: R = -1.832e+01 + 7.596e-02a + 7.028e-03s + 2.384e-01t
+```{r}
+broadwayShows_MRM = broadwayShows%>%dplyr::select(Paid.Attendance, Number.of.Shows, Avg.Ticket.Price, Revenue)
+bs_MRM = lm(Revenue~.,broadwayShows_MRM)
+library(MASS)
+AIC_bs<-stepAIC(bs_MRM,direction = "both",trace = FALSE)
+detach("package:MASS")
+summary(AIC_bs)
+```
+
+Question 5
+- Interpret the MRM from Q4 in terms of attendees: if the number of shows and the average ticket price remain constant, then for every 1,000 paying customer, the Broadway show industry will make about 75,960 dollars in revenue. 
+
+Question 6
+- Interpret the Adjusted R-sq value (0.9986): the model mentioned above will make a good prediction about 99% of the time.
+
+Question 7
+- select reasonable values for the variables and apply to predict() function
+- Interpretation: If there are about 54,325 paying customers and Broadway hosts 50 shows where each ticket costs about $200 each, the industry has the potential to make around 358.2417 million dollars in revenue. 
+```{r}
+own_data = data.frame(Paid.Attendance =54325, Number.of.Shows = 50, Avg.Ticket.Price = 200)
+predict(AIC_bs, own_data)
+```

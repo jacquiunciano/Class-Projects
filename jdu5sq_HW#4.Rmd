@@ -1,0 +1,66 @@
+---
+title: "jdu5sq_HW#4"
+author: "Jacqui Unciano"
+date: "16/09/2021"
+output: html_document
+---
+
+```{r}
+PVA_data = read.csv("C:\\Users\\jacqu\\Downloads\\School Work\\MathTech Class\\STAT 1601\\DataSets\\PVA.csv")
+library(tidyverse)
+library(dplyr)
+```
+
+Question 1
+- change variable names
+```{r}
+names(PVA_data)[c(5,8)] = c("income_level", "current_gift")
+PVA_data1 = PVA_data
+```
+
+Question 2
+- sd calculations of variable 6:8
+```{r}
+apply(PVA_data1[,c(6,7,8)],2,sd, na.rm = T)
+```
+
+Question 3
+- new column
+```{r}
+PVA_data1$diff.in.gift = PVA_data1$Largest.Gift - PVA_data1$Smallest.Gift
+New_Data = PVA_data1
+head(New_Data,8)
+```
+
+Question 4
+- remove variables with dplyr
+```{r}
+PVA_data2 = PVA_data %>% select(-Sex, -Other.Gifts)
+```
+
+Question 5
+- median gifts based on income level
+```{r}
+PVA_data2 %>% group_by(income_level) %>% summarise(Median_Gifts = median(current_gift))
+```
+
+Question 6
+- more than $50 and more than 1 year lapse
+```{r}
+qdata = PVA_data2 %>% filter(current_gift > 50, Time.Between.Gifts > 1)
+qdata %>% summarise(Mean_Gift = mean(current_gift))
+```
+
+Question 7
+- extract data andn two way table
+```{r}
+q2data = PVA_data2 %>% filter(Age <= 60, income_level >= 5)
+q2data %>% select(income_level, Own.Home) %>% table()
+```
+
+Question 8
+- adding column
+```{r}
+New_Data2 = mutate(PVA_data2, diff.in.gift = Largest.Gift - Smallest.Gift)
+slice(New_Data2,1:8)
+```
