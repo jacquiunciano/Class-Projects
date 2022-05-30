@@ -194,7 +194,28 @@ Query the Manhattan Distance between points p1 and p2 and round it to a scale of
 select cast(round((max(lat_n)-min(lat_n))+(max(long_w)-min(long_w)),4) as numeric(20,4))
 from station;
 
+/** Consider p1=(a,c) and p2=(b,d) to be two points on a 2D plane where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) and 
+(c,d) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION. **/
 
+select cast(
+    round(
+        sqrt(power(max(lat_n)-min(lat_n),2)+power(max(long_w)-min(long_w),2)),4
+    )
+as numeric(20,4))
+from station;
+
+/** A median is defined as a number separating the higher half of a data set from the lower half. Query the median of the Northern Latitudes (LAT_N) 
+from STATION and round your answer to 4 decimal places. **/
+
+select cast(round(s.lat_n,4) as numeric(20,4))
+from station s
+where (select count(lat_n)
+      from station
+      where lat_n < s.lat_n) = 
+      (select count(lat_n)
+      from station
+      where lat_n > s.lat_n);
+      
 
 
 
